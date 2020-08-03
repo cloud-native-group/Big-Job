@@ -339,33 +339,34 @@ public class RestServiceApplication {
 
 ```yml
 spring:
-  application:
-    name: zuul-server
+    application:
+        name: zuul-service
 server:
-  port: 6060
+    port: 6060
 eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://127.0.0.1:8080/eureka/
+    client:
+        serviceUrl:
+            defaultZone: http://10.64.140.215:8969/eureka/
 zuul:
-  routes:
-    rest-service:
-      path: /rest/**
-      serviceId: rest-service
+    routes:
+        rest-service:
+            path: /rest/**
+#            serviceId: rest-service
+            url: http://rest-service:7070
 
-  ratelimit:
-#    key-prefix: springcloud-book #按粒度拆分的临时变量key前缀
-    enabled: true #启用开关
-#    repository: IN_MEMORY #key存储类型，默认是IN_MEMORY本地内存，此外还有多种形式
-#    behind-proxy: true #表示代理之后
-    default-policy: #全局限流策略，可单独细化到服务粒度
-      limit: 100 #在一个单位时间窗口的请求数量
-#      quota: 1 #在一个单位时间窗口的请求时间限制
-      refresh-interval: 1 #单位时间窗口
-      type:
-#        - user #可指定用户粒度
-#        - origin #可指定客户端地址粒度
-        - url #可指定url粒度
+    ratelimit:
+        #    key-prefix: springcloud-book #按粒度拆分的临时变量key前缀
+        enabled: true #启用开关
+        #    repository: IN_MEMORY #key存储类型，默认是IN_MEMORY本地内存，此外还有多种形式
+        #    behind-proxy: true #表示代理之后
+        default-policy: #全局限流策略，可单独细化到服务粒度
+            limit: 100 #在一个单位时间窗口的请求数量
+            #      quota: 0 #在一个单位时间窗口的请求时间限制
+            refresh-interval: 1 #单位时间窗口
+            type:
+                #        - user #可指定用户粒度
+                #        - origin #可指定客户端地址粒度
+                - url #可指定url粒度
 ```
 
 以上配置表明，当请求达到每秒 100 次的时候，返回 429（Too many requests），即使微服务启动了多个实例，仍然如此，即多个实例接口的每秒请求次数之和不超过100次。
@@ -563,11 +564,11 @@ node('slave') {
 }
 ```
 
-![image-20200803015813780](pic\image-20200803015813780.png)
+![image-20200803015813780](pic\image-20200804004217081.png)
 
 
 
-![image-20200803020110856](pic\image-20200803020110856.png)
+![image-20200804004335141](pic\image-20200804004335141.png)
 
 
 
@@ -645,7 +646,7 @@ node('slave') {
 }
 ```
 
-![image-20200803015831369](pic\image-20200803015813780.png)
+![image-20200803015831369](pic\image-20200804004217081.png)
 
 
 
@@ -727,10 +728,14 @@ node('slave') {
 }
 ```
 
-![image-20200803015839109](pic\image-20200803015813780.png)
+![image-20200804004217081](pic\image-20200804004217081.png)
 
 
 
+![image-20200804004105287](pic\image-20200804004105287.png)
 
+
+
+图没有换新的
 
 ## 三、扩容场景
